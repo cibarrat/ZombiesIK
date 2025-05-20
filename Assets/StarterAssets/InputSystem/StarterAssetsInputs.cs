@@ -12,8 +12,14 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+        public bool aim;
+		public bool shoot;
+		public bool switchSides;
+		public bool pause;
+		public bool reload;
+		public bool heal;
 
-		[Header("Movement Settings")]
+        [Header("Movement Settings")]
 		public bool analogMovement;
 
 		[Header("Mouse Cursor Settings")]
@@ -43,10 +49,35 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+
+        public void OnAim(InputValue value)
+        {
+            AimInput(value.isPressed);
+        }
+
+        public void OnShoot(InputValue value)
+        {
+            ShootInput(value.isPressed);
+        }
+        public void OnPause(InputValue value)
+        {
+            PauseInput(value.isPressed);
+        }
+        public void OnSwitchSides(InputValue value)
+        {
+            SwitchSidesInput(value.isPressed);
+        }
+        public void OnReload(InputValue value)
+        {
+            ReloadInput(value.isPressed);
+        }
+        public void OnHeal(InputValue value)
+        {
+            HealInput(value.isPressed);
+        }
 #endif
 
-
-		public void MoveInput(Vector2 newMoveDirection)
+        public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
 		} 
@@ -66,12 +97,37 @@ namespace StarterAssets
 			sprint = newSprintState;
 		}
 
-		private void OnApplicationFocus(bool hasFocus)
+        public void AimInput(bool newAimState)
+        {
+            aim = newAimState;
+        }
+        public void ShootInput(bool newShootState)
+        {
+            shoot = newShootState;
+        }
+        public void PauseInput(bool newPauseState)
+        {
+            pause = newPauseState;
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
 		}
+        public void SwitchSidesInput(bool newSwitchSidesState)
+        {
+            switchSides = newSwitchSidesState;
+        }
+        public void ReloadInput(bool newReloadState)
+        {
+            reload = newReloadState;
+        }
+        public void HealInput(bool newHealState)
+        {
+            heal = newHealState;
+        }
 
-		private void SetCursorState(bool newState)
+        private void SetCursorState(bool newState)
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
