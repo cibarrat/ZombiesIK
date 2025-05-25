@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEngine.XR;
 
 public class ThirdPersonShooterController : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] private AudioClip gunClickSound;
     [SerializeField] private AudioClip gunReloadSound;
     [SerializeField] private GameObject bloodSplatter;
+    [SerializeField] private Transform gunRestPosition;
     public int LoadedAmmo { get; private set; }
     public float focusTime = 0.5f;
     public float shootRate = 0.5f;
@@ -30,6 +32,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     public float focusedCrosshairRadius = 0.1f;
     public float shootDamage = 15;
     public float reloadTime = 3;
+    public float maxIKweight = 0.5f;
 
     private StarterAssetsInputs starterAssetsInputs;
     private ThirdPersonController thirdPersonController;
@@ -45,6 +48,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     private Coroutine FocusCoroutine = null;
     private Coroutine ReloadCoroutine = null;
     private AudioSource audioSource;
+    private float ikWeight;
 
     private void Awake()
     {
@@ -53,7 +57,8 @@ public class ThirdPersonShooterController : MonoBehaviour
         animator = GetComponent<Animator>();
         stats = GetComponent<PlayerStats>();
         LoadedAmmo = stats.AmmoCapacity;
-        audioSource = GetComponent<AudioSource>(); 
+        audioSource = GetComponent<AudioSource>();
+        ikWeight = maxIKweight;
     }
 
     private void Update()
@@ -78,11 +83,12 @@ public class ThirdPersonShooterController : MonoBehaviour
             }
             aimVirtualCamera.gameObject.SetActive(true);
             crosshair.SetActive(true);
+            animator.SetBool("isAiming", true);
             //thirdPersonController.SetRotateOnMove(false);
             //thirdPersonController.SetSensitivity(aimSensitivity);
             if (!isReloading)
             {
-                animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));//set aim layer  to weight 1 aim
+                //animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));//set aim layer  to weight 1 aim
             }
             if (!crosshairFocused && starterAssetsInputs.move == Vector2.zero && FocusCoroutine == null)
             {
@@ -121,13 +127,14 @@ public class ThirdPersonShooterController : MonoBehaviour
             {
                 animator.GetBoneTransform(HumanBodyBones.Neck).forward = Vector3.Lerp(animator.GetBoneTransform(HumanBodyBones.Neck).forward, raycastHit.point, Time.deltaTime * 20f);
             }
+            animator.SetBool("isAiming", false);
             thirdPersonController.SetCanRun(true);
             //thirdPersonController.SetRotateOnMove(true);
             aimVirtualCamera.gameObject.SetActive(false);
             crosshair.SetActive(false);
             obstacleCrosshair.SetActive(false);
             //thirdPersonController.SetSensitivity(normalSensitivity);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f)); //set aim layer to 0 - idle
+            //animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f)); //set aim layer to 0 - idle
             animator.GetBoneTransform(HumanBodyBones.Spine).rotation = Quaternion.identity;
             UnfocusCrosshair();
         }
@@ -144,7 +151,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             {
                 if (shootRateTimeout <= 0f && Physics.Raycast(spawnBulletPosition.position, shootAimDirection, out RaycastHit hitInfo, 999f, aimColliderLayerMask))
                 {
-                    animator.SetTrigger("IsRecoil");//Pistol Recoil animation
+                    animator.SetTrigger("isRecoil");//Pistol Recoil animation
                     AudioSource.PlayClipAtPoint(gunFire, spawnBulletPosition.position);
                     shootRateTimeout = shootRate;
                     if (hitInfo.collider.gameObject.CompareTag("Enemy"))
@@ -191,7 +198,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         if (stats.Ammo > 0)
         {
             audioSource.PlayOneShot(gunReloadSound);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));//set aim layer 1
+            //animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));//set aim layer 1
             animator.SetTrigger("IsReload");//set Bool True <---AQUI ESTA REVISANDO SI AMMO O NO
             isReloading = true;
             yield return new WaitForSeconds(reloadTime);
@@ -304,5 +311,20 @@ public class ThirdPersonShooterController : MonoBehaviour
             crosshairFocused = false;
             FocusCoroutine = null;
         }
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if (animator.GetBool("isAiming") && ikWeight > 0)
+        {
+            ikWeight = ikWeight < 0? 0 : ikWeight - 2 * Time.deltaTime;
+        } else if (ikWeight < maxIKweight)
+        {
+            ikWeight = ikWeight > maxIKweight? 0.8f: ikWeight + 2 * Time.deltaTime;
+        }
+        animator.SetIKPosition(AvatarIKGoal.RightHand, gunRestPosition.position + gunRestPosition.right * .05f);
+        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, ikWeight);
+        animator.SetIKPosition(AvatarIKGoal.LeftHand, gunRestPosition.position - gunRestPosition.right * .05f);
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, ikWeight);
     }
 }

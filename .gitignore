@@ -72,3 +72,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 /Assets/Scenes/SampleScene.unity
+Assets/Characters/Zombie/Models/zombie.fbx
+Assets/Characters/Zombie/Models/zombie.fbx.meta
