@@ -6,6 +6,11 @@ TagManager:
   tags:
   - UMAKeepChain
   - UMAIgnore
+  - CinemachineTarget
+  - Enemy
+  - Ammo
+  - Medkit
+  - Goal
   layers:
   - Default
   - TransparentFX
