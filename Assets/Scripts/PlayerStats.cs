@@ -9,7 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
-
+    [SerializeField] private GameObject winScreen;
+    [SerializeField] private GameObject loseScreen;
     [SerializeField] private float maxHP = 100;
     [field:SerializeField] public int AmmoCapacity { get; private set; } = 15;
     [SerializeField] private float hitstun = 2;
@@ -146,7 +147,7 @@ public class PlayerStats : MonoBehaviour
     private IEnumerator DeathDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        gameoverMenu.gameObject.SetActive(true);
+        loseScreen.SetActive(true);
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -154,7 +155,7 @@ public class PlayerStats : MonoBehaviour
 
     public void Victory()
     {
-        victoryMenu.gameObject.SetActive(true);
+        winScreen.SetActive(true);
         Time.timeScale = 0f;
         virtualCamera.enabled = false;
         Cursor.lockState = CursorLockMode.None;
