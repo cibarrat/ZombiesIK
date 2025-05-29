@@ -25,6 +25,8 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] private AudioClip gunReloadSound;
     [SerializeField] private GameObject bloodSplatter;
     [SerializeField] private Transform gunRestPosition;
+    [SerializeField] private Transform pistol;
+    [SerializeField] private Transform rightHand;
     public int LoadedAmmo { get; private set; }
     public float focusTime = 0.5f;
     public float shootRate = 0.5f;
@@ -32,7 +34,8 @@ public class ThirdPersonShooterController : MonoBehaviour
     public float focusedCrosshairRadius = 0.1f;
     public float shootDamage = 15;
     public float reloadTime = 3;
-    public float maxIKweight = 0.5f;
+    public float maxAimIkWeight = 0.3f;
+    public float maxLookAtIkWeight = 1;
 
     private StarterAssetsInputs starterAssetsInputs;
     private ThirdPersonController thirdPersonController;
@@ -43,12 +46,18 @@ public class ThirdPersonShooterController : MonoBehaviour
     private float shootRateTimeout = 0f;
     private bool gunClick = false;
     private bool isReloading = false;
+    private bool isAiming = false;
     public bool CanAim { get; set; } = true;
 
     private Coroutine FocusCoroutine = null;
     private Coroutine ReloadCoroutine = null;
     private AudioSource audioSource;
     private float ikWeight;
+    private float ikHeadWeight;
+    private Vector3 ikLookAtPosition;
+    private Vector3 ikCurrentLookPosition;
+    private Vector3 ikAimAtPosition;
+    private Vector3 ikCurrentAimPosition;
 
     private void Awake()
     {
@@ -58,11 +67,15 @@ public class ThirdPersonShooterController : MonoBehaviour
         stats = GetComponent<PlayerStats>();
         LoadedAmmo = stats.AmmoCapacity;
         audioSource = GetComponent<AudioSource>();
-        ikWeight = maxIKweight;
+        ikWeight = maxAimIkWeight;
+        ikHeadWeight = maxAimIkWeight;
     }
 
     private void Update()
     {
+        pistol.position = rightHand.TransformPoint(new Vector3(0, .05f, .02f));
+        pistol.rotation = rightHand.rotation * Quaternion.Euler(new Vector3(0, 275, 80));
+        isAiming = starterAssetsInputs.aim;
         SwitchAimSide();
         Aim();
         if (starterAssetsInputs.reload && LoadedAmmo < stats.AmmoCapacity && ReloadCoroutine == null)
@@ -74,7 +87,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     private void Aim()
     {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        if (CanAim && starterAssetsInputs.aim)
+        if (CanAim && isAiming)
         {
             thirdPersonController.SetCanRun(false);
             if (shootRateTimeout > 0f)
@@ -111,7 +124,8 @@ public class ThirdPersonShooterController : MonoBehaviour
                 Vector3 worldAimTarget = mouseWorldPosition;
                 worldAimTarget.y = transform.position.y;
                 Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-
+                ikLookAtPosition = worldAimTarget;
+                ikAimAtPosition = worldAimTarget;
                 transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
 
                 animator.GetBoneTransform(HumanBodyBones.Spine).LookAt(aimDirection);
@@ -125,8 +139,9 @@ public class ThirdPersonShooterController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
             {
-                animator.GetBoneTransform(HumanBodyBones.Neck).forward = Vector3.Lerp(animator.GetBoneTransform(HumanBodyBones.Neck).forward, raycastHit.point, Time.deltaTime * 20f);
+                //ikCurrentLookPosition = raycastHit.point;
             }
+            ikAimAtPosition = gunRestPosition.position;
             animator.SetBool("isAiming", false);
             thirdPersonController.SetCanRun(true);
             //thirdPersonController.SetRotateOnMove(true);
@@ -214,7 +229,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     private IEnumerator FocusCrosshair(float time)
     {
         yield return new WaitForSeconds(time);
-        if (starterAssetsInputs.aim && !crosshairFocused && starterAssetsInputs.move == Vector2.zero)
+        if (isAiming && !crosshairFocused && starterAssetsInputs.move == Vector2.zero)
         {
             Transform[] crosshairs = crosshair.GetComponentsInChildren<Transform>();
             crosshairFocused = true;
@@ -315,16 +330,28 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private void OnAnimatorIK(int layerIndex)
     {
-        if (animator.GetBool("isAiming") && ikWeight > 0)
+        ikCurrentLookPosition = Vector3.Lerp(ikCurrentLookPosition, ikLookAtPosition, Time.deltaTime * 5);
+        //ikCurrentAimPosition = Vector3.Lerp(ikCurrentAimPosition, ikAimAtPosition, Time.deltaTime * 5);
+        if (CanAim && isAiming)
         {
-            ikWeight = ikWeight < 0? 0 : ikWeight - 2 * Time.deltaTime;
-        } else if (ikWeight < maxIKweight)
-        {
-            ikWeight = ikWeight > maxIKweight? 0.8f: ikWeight + 2 * Time.deltaTime;
+            ikCurrentAimPosition = Vector3.Lerp(ikCurrentAimPosition, ikAimAtPosition, Time.deltaTime * 5);
+            ikHeadWeight = ikHeadWeight < maxLookAtIkWeight ? ikHeadWeight + 5 * Time.deltaTime : maxLookAtIkWeight;
+            animator.SetLookAtWeight(ikHeadWeight, ikHeadWeight * 0.5f);
+            animator.SetLookAtPosition(ikCurrentLookPosition);
+            animator.SetIKPosition(AvatarIKGoal.RightHand, ikCurrentAimPosition);
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
         }
-        animator.SetIKPosition(AvatarIKGoal.RightHand, gunRestPosition.position + gunRestPosition.right * .05f);
-        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, ikWeight);
-        animator.SetIKPosition(AvatarIKGoal.LeftHand, gunRestPosition.position - gunRestPosition.right * .05f);
-        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, ikWeight);
+        else
+        {
+            ikHeadWeight = ikHeadWeight > 0 ? ikHeadWeight - 3 * Time.deltaTime : 0;
+            animator.SetLookAtWeight(ikHeadWeight);
+            animator.SetIKPosition(AvatarIKGoal.RightHand, ikAimAtPosition);
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, ikWeight);
+        }
+
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand,.55f);
+        animator.SetIKPosition(AvatarIKGoal.LeftHand, pistol.position);//TransformPoint(new Vector3(0.251f, 0.916f, 0.293f)));
+        animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, ikWeight);
+        //animator.SetIKRotation(AvatarIKGoal.LeftHand, pistol.rotation);
     }
 }

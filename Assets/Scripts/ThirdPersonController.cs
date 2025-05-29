@@ -218,7 +218,7 @@ namespace StarterAssets
             if (_canMove)
             {
                 // set target speed based on move speed, sprint speed and if sprint is pressed
-                float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+                float targetSpeed = _input.sprint && _canRun ? SprintSpeed : MoveSpeed;
 
                 // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
