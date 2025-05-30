@@ -36,6 +36,7 @@ public class ZombieController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI isAttackingText;
     [SerializeField] private TextMeshProUGUI isRoamingText;
     [SerializeField] private TextMeshProUGUI seesPlayerText;
+   
     public bool debug = false;
 
     private bool canMoan = true;
@@ -56,9 +57,11 @@ public class ZombieController : MonoBehaviour
     private Coroutine roamCoroutine = null;
     private CharacterController controller;
     private Animator animator;
+    private PlayerStats playerStats;
 
     private void Awake()
     {
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         sight = GetComponentInChildren<Camera>();
         navMeshAgent = GetComponentInChildren<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
@@ -237,7 +240,7 @@ public class ZombieController : MonoBehaviour
                 StartCoroutine(Hitstun());
             }
             HP -= damage;
-            if (HP < 0)
+            if (HP <= 0)
             {
                 animator.SetTrigger("IsDead");
                 StopAllCoroutines();
@@ -247,6 +250,7 @@ public class ZombieController : MonoBehaviour
                 canAttack = false;
                 canMoan = false;
                 isChasing = false;
+                playerStats.IncreaseKilledCount();
             }
             if (chanceOfGrunt > 0.5f)
             {

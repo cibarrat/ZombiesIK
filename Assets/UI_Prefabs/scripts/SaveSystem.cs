@@ -18,19 +18,19 @@ public class SaveSystem : MonoBehaviour
     [SerializeField] private TMP_Text daysText;
     [SerializeField] private TMP_Text killedText;
 
+    public void Awake()
+    {
+        nameText.text = PlayerPrefs.GetString("NameKey");
+        daysText.text = PlayerPrefs.GetInt("deaths").ToString();
+        killedText.text = PlayerPrefs.GetInt("killed").ToString();
+    }
+
+
     public void SaveData ()
     {
 
-        days = int.Parse(daysInput.text);
-        killed = int.Parse(killedInput.text);
-
         PlayerPrefs.SetString("NameKey", nameInput.text);
-        PlayerPrefs.SetInt("DaysKey", days);
-        PlayerPrefs.SetInt("KilledKey", killed);
-
         nameText.text = PlayerPrefs.GetString("NameKey");
-        daysText.text = PlayerPrefs.GetInt("DaysKey").ToString();
-        killedText.text = PlayerPrefs.GetInt("KilledKey").ToString();
     }
 
     public void EraseData()
@@ -42,9 +42,9 @@ public class SaveSystem : MonoBehaviour
         killedInput.text = ""; 
 
         // PlayerPrefs.DeleteKey("AgeKey");    Codigo para borrar solamente uno de los inputs: 
-        nameText.text = "Name";
-        daysText.text = "Days";
-        killedText.text = "Killed";
+        nameText.text = "";
+        daysText.text = "0";
+        killedText.text = "0";
 
 
     }

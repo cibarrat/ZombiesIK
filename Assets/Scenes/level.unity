@@ -18604,6 +18604,11 @@ PrefabInstance:
       objectReference: {fileID: 1433461419}
     - target: {fileID: 7993413580060290293, guid: f713dd718580ab74a94b1c94c1f162e5,
         type: 3}
+      propertyPath: killedText
+      value: 
+      objectReference: {fileID: 1514474371}
+    - target: {fileID: 7993413580060290293, guid: f713dd718580ab74a94b1c94c1f162e5,
+        type: 3}
       propertyPath: loseScreen
       value: 
       objectReference: {fileID: 329206177}
@@ -19198,7 +19203,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1125687458}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1230050571}
+        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+        m_MethodName: ExitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1125687458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20080,7 +20097,7 @@ PrefabInstance:
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 38.23552
+      value: 38.90752
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
@@ -20090,7 +20107,7 @@ PrefabInstance:
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -51.003635
+      value: -51.507633
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
@@ -25086,7 +25103,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 408, y: -120}
+  m_AnchoredPosition: {x: 190, y: -121}
   m_SizeDelta: {x: 345, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1452932645
@@ -25133,7 +25150,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1452932646}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1230050571}
+        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+        m_MethodName: ExitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1452932646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25965,6 +25994,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: beec66131a70bcd4e957345ad0c80208, type: 3}
+--- !u!114 &1514474371 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3264814101146525015, guid: beec66131a70bcd4e957345ad0c80208,
+    type: 3}
+  m_PrefabInstance: {fileID: 1514474370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1523532166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26505,7 +26546,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1550657692}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1230050571}
+        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+        m_MethodName: restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1550657692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32586,7 +32639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1947160018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34040,7 +34093,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6, y: -120}
+  m_AnchoredPosition: {x: -224, y: -121}
   m_SizeDelta: {x: 345, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2081468430
@@ -34087,7 +34140,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2081468431}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1230050571}
+        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+        m_MethodName: restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2081468431
 MonoBehaviour:
   m_ObjectHideFlags: 0
