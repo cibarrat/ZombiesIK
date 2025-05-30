@@ -20,7 +20,12 @@ public class PauseManager : MonoBehaviour
     public void ExitGame()
     {
         Debug.Log("exit");
-        SceneManager.LoadScene("StartMenu");
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void restart()
+    {
+        SceneManager.LoadScene("level");
     }
 
 

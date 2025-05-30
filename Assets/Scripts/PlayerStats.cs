@@ -20,6 +20,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private AudioClip playerHurt;
     [SerializeField] private AudioClip healEffect;
     [SerializeField] private GameObject canvas;
+    [SerializeField] private TMP_Text killedText;
+
     private GameObject CamMovement;
 
     private CinemachineVirtualCamera virtualCamera;
@@ -41,8 +43,12 @@ public class PlayerStats : MonoBehaviour
 
     public float delayDeathTime = 0.3f;
 
+    
+    private int killed;
+
     private void Awake()
     {
+        killed = PlayerPrefs.GetInt("killed");
         tpsController = GetComponent<ThirdPersonShooterController>();
         tpController = GetComponent<ThirdPersonController>();
         currentHP = maxHP;
@@ -75,6 +81,7 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
 
+        killedText.text = "Killed: " + killed.ToString();
         ammoText.text = $"Ammo: {tpsController.LoadedAmmo} | {Ammo}";
         healthText.text = $"Health: {currentHP}";
         medkitsText.text = $"Medkits: {Medkits}";
@@ -91,6 +98,14 @@ public class PlayerStats : MonoBehaviour
             healPressed = false;
         }
     }
+
+    public void IncreaseKilledCount()
+    {
+        killed++;
+        PlayerPrefs.SetInt("killed", killed);
+    }
+
+
 
     public void Damage(float damage)
     {
@@ -140,6 +155,9 @@ public class PlayerStats : MonoBehaviour
 
     public void GameOver()
     {
+        int deaths = PlayerPrefs.GetInt("deaths");
+        deaths++;
+        PlayerPrefs.SetInt("deaths", deaths);
         virtualCamera.enabled = false;
         StartCoroutine(DeathDelay(delayDeathTime));
     }
