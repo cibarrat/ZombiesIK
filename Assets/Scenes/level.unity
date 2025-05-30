@@ -1728,6 +1728,26 @@ PrefabInstance:
       propertyPath: m_Height
       value: 1.51
       objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: HP
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: chaseSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: stunDamageLimit
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: <AttackDamage>k__BackingField
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5697702529972486461, guid: c0a29ed974934a843983cd04e2abc917,
         type: 3}
       propertyPath: m_Layer
@@ -3507,6 +3527,11 @@ PrefabInstance:
       propertyPath: m_Height
       value: 1.51
       objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: chaseSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5697702529972486461, guid: c0a29ed974934a843983cd04e2abc917,
         type: 3}
       propertyPath: m_Layer
@@ -3817,7 +3842,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: fdd4daf8b9a9e9445b121ff300e07cf9, type: 3}
+  m_Texture: {fileID: 2800000, guid: 9591a0e5d7037c540942e53091c97450, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -12266,6 +12291,26 @@ PrefabInstance:
       propertyPath: m_Height
       value: 1.51
       objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: HP
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: chaseSpeed
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: stunDamageLimit
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: <AttackDamage>k__BackingField
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 5697702529972486461, guid: c0a29ed974934a843983cd04e2abc917,
         type: 3}
       propertyPath: m_Layer
@@ -14393,6 +14438,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Height
       value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: HP
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: chaseSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: stunDamageLimit
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: timeBetweenMoans
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: <AttackDamage>k__BackingField
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5697702529972486461, guid: c0a29ed974934a843983cd04e2abc917,
         type: 3}
@@ -16769,6 +16839,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Height
       value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: HP
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: chaseSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: stunDamageLimit
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: <AttackDamage>k__BackingField
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5697702529972486461, guid: c0a29ed974934a843983cd04e2abc917,
         type: 3}
@@ -20097,7 +20187,7 @@ PrefabInstance:
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 38.90752
+      value: 38.23552
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
@@ -20107,7 +20197,7 @@ PrefabInstance:
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -51.507633
+      value: -51.003635
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
@@ -32316,6 +32406,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Height
       value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697702529787723224, guid: c0a29ed974934a843983cd04e2abc917,
+        type: 3}
+      propertyPath: chaseSpeed
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5697702529972486461, guid: c0a29ed974934a843983cd04e2abc917,
         type: 3}
