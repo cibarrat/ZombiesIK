@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine.XR;
+using UnityEngine.SocialPlatforms;
 
 public class ThirdPersonShooterController : MonoBehaviour
 {
@@ -54,6 +55,9 @@ public class ThirdPersonShooterController : MonoBehaviour
     private AudioSource audioSource;
     private float ikWeight;
     private float ikHeadWeight;
+    private float ikSpineAngle = 0;
+    private float ikSpineAngleSpeed = 50;
+    private float maxIkSpineAngle = 15;
     private Vector3 ikLookAtPosition;
     private Vector3 ikCurrentLookPosition;
     private Vector3 ikAimAtPosition;
@@ -124,8 +128,8 @@ public class ThirdPersonShooterController : MonoBehaviour
                 Vector3 worldAimTarget = mouseWorldPosition;
                 worldAimTarget.y = transform.position.y;
                 Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-                ikLookAtPosition = worldAimTarget;
-                ikAimAtPosition = worldAimTarget;
+                ikLookAtPosition = mouseWorldPosition;
+                ikAimAtPosition = mouseWorldPosition;
                 transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
 
                 animator.GetBoneTransform(HumanBodyBones.Spine).LookAt(aimDirection);
@@ -212,9 +216,10 @@ public class ThirdPersonShooterController : MonoBehaviour
         
         if (stats.Ammo > 0)
         {
+            
             audioSource.PlayOneShot(gunReloadSound);
             //animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));//set aim layer 1
-            animator.SetTrigger("IsReload");//set Bool True <---AQUI ESTA REVISANDO SI AMMO O NO
+            animator.SetTrigger("isReload");//set Bool True <---AQUI ESTA REVISANDO SI AMMO O NO
             isReloading = true;
             yield return new WaitForSeconds(reloadTime);
             LoadedAmmo = stats.ReloadAmmo(LoadedAmmo);
@@ -330,28 +335,78 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private void OnAnimatorIK(int layerIndex)
     {
-        ikCurrentLookPosition = Vector3.Lerp(ikCurrentLookPosition, ikLookAtPosition, Time.deltaTime * 5);
-        //ikCurrentAimPosition = Vector3.Lerp(ikCurrentAimPosition, ikAimAtPosition, Time.deltaTime * 5);
+        ikCurrentLookPosition = Vector3.Lerp(ikCurrentLookPosition, ikLookAtPosition, Time.deltaTime * 10);
+        ikCurrentAimPosition = Vector3.Lerp(ikCurrentAimPosition, ikAimAtPosition, Time.deltaTime * 10);
         if (CanAim && isAiming)
         {
-            ikCurrentAimPosition = Vector3.Lerp(ikCurrentAimPosition, ikAimAtPosition, Time.deltaTime * 5);
+            ikCurrentAimPosition = Vector3.Lerp(ikCurrentAimPosition, ikCurrentAimPosition, Time.deltaTime * 10);
             ikHeadWeight = ikHeadWeight < maxLookAtIkWeight ? ikHeadWeight + 5 * Time.deltaTime : maxLookAtIkWeight;
             animator.SetLookAtWeight(ikHeadWeight, ikHeadWeight * 0.5f);
             animator.SetLookAtPosition(ikCurrentLookPosition);
+            
             animator.SetIKPosition(AvatarIKGoal.RightHand, ikCurrentAimPosition);
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+            Vector3 direction = (ikCurrentAimPosition - rightHand.position).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            animator.SetIKRotation(AvatarIKGoal.RightHand, targetRotation * Quaternion.Euler(0, 30, -90));
         }
         else
         {
+
+            if (starterAssetsInputs.move.x > 0 && starterAssetsInputs.move.y > 0)
+            {
+                if (ikSpineAngle > maxIkSpineAngle * -1)
+                {
+                    ikSpineAngle = ikSpineAngle - Time.deltaTime * ikSpineAngleSpeed;
+                    if (ikSpineAngle < maxIkSpineAngle * -1)
+                    {
+                        ikSpineAngle = maxIkSpineAngle * -1;
+                    }
+                }
+            }
+            else if (starterAssetsInputs.move.x < 0 && starterAssetsInputs.move.y > 0)
+            {
+                if (ikSpineAngle < maxIkSpineAngle)
+                {
+                    ikSpineAngle = ikSpineAngle + Time.deltaTime * ikSpineAngleSpeed;
+                    if (ikSpineAngle > maxIkSpineAngle)
+                    {
+                        ikSpineAngle = maxIkSpineAngle;
+                    }
+                }
+                
+            } else
+            {
+                if (ikSpineAngle < 0)
+                {
+                    ikSpineAngle = ikSpineAngle + Time.deltaTime * ikSpineAngleSpeed;
+                    if (ikSpineAngle > 0)
+                    {
+                        ikSpineAngle = 0;
+                    }
+                } else if (ikSpineAngle > 0)
+                {
+                    ikSpineAngle = ikSpineAngle - Time.deltaTime * ikSpineAngleSpeed;
+                    if (ikSpineAngle < 0)
+                    {
+                        ikSpineAngle = 0;
+                    }
+                }
+            }
+            animator.SetBoneLocalRotation(HumanBodyBones.Spine, Quaternion.Euler(0, 0, ikSpineAngle));
+            ikCurrentAimPosition = Vector3.Lerp(ikCurrentAimPosition, gunRestPosition.position, Time.deltaTime * 20);
             ikHeadWeight = ikHeadWeight > 0 ? ikHeadWeight - 3 * Time.deltaTime : 0;
             animator.SetLookAtWeight(ikHeadWeight);
-            animator.SetIKPosition(AvatarIKGoal.RightHand, ikAimAtPosition);
-            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, ikWeight);
+            animator.SetIKPosition(AvatarIKGoal.RightHand, ikCurrentAimPosition);
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, isReloading? 0 : ikWeight);
+            Vector3 direction = (ikCurrentAimPosition - rightHand.position).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            animator.SetIKRotation(AvatarIKGoal.RightHand, targetRotation * Quaternion.Euler(70, 0, 190));
         }
-
-        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand,.55f);
+        animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, isReloading ? 0 : 0.9f);
         animator.SetIKPosition(AvatarIKGoal.LeftHand, pistol.position);//TransformPoint(new Vector3(0.251f, 0.916f, 0.293f)));
-        animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, ikWeight);
-        //animator.SetIKRotation(AvatarIKGoal.LeftHand, pistol.rotation);
+        animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, isReloading ? 0 : 1);
+        animator.SetIKRotation(AvatarIKGoal.LeftHand, pistol.rotation * Quaternion.Euler(0, 90, 210));
     }
 }
