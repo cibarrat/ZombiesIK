@@ -269,9 +269,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202607568447583331}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0144, y: 1.025, z: 0.2122}
-  m_LocalScale: {x: 0.103211105, y: 0.103211105, z: 0.103211105}
+  m_LocalRotation: {x: -0, y: -0, z: 6.9283234e-12, w: 1}
+  m_LocalPosition: {x: -0.06399824, y: 1.025, z: 0.21500044}
+  m_LocalScale: {x: 0.10321109, y: 0.1032111, z: 0.10321109}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6843402422126172484}
@@ -1674,7 +1674,6 @@ Transform:
   - {fileID: 1344593809025972688}
   - {fileID: 3680551929800406341}
   - {fileID: 2669236209700268320}
-  - {fileID: 3688693783704401282}
   - {fileID: 5082834280926226370}
   - {fileID: 5336153734723210312}
   m_Father: {fileID: 0}
@@ -1937,18 +1936,18 @@ MonoBehaviour:
     type: 3}
   gunFire: {fileID: 8300000, guid: 9af430d471560a44aa6757fcce6e70ae, type: 3}
   gunClickSound: {fileID: 8300000, guid: 23e9aaf0feca2804aa6cd1977f67fac2, type: 3}
-  gunReloadSound: {fileID: 8300000, guid: ed64ff2a012c2d04e86144a70daa6420, type: 3}
+  gunReloadSound: {fileID: 8300000, guid: e1e9d03b6cbad3f4580a98e849474916, type: 3}
   bloodSplatter: {fileID: 5546061203685830786, guid: eba1b97c62730ae46bb36a70990be12d,
     type: 3}
   gunRestPosition: {fileID: 2669236209700268320}
   pistol: {fileID: 5082834280926226370}
   rightHand: {fileID: 4667896942170620263}
   focusTime: 1
-  shootRate: 0.15
+  shootRate: 0.5
   unfocusedCrosshairRadius: 20
   focusedCrosshairRadius: 0.1
-  shootDamage: 15
-  reloadTime: 3
+  shootDamage: 30
+  reloadTime: 0.8
   maxAimIkWeight: 0.3
   maxLookAtIkWeight: 1
 --- !u!82 &1597092628360427882
@@ -2786,12 +2785,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8116974513882299674}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.388, z: 0.642}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.27, y: -0.014999986, z: 0.124}
   m_LocalScale: {x: 0.100902535, y: 0.100902535, z: 0.100902535}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6843402422126172484}
+  m_Father: {fileID: 5082834280926226370}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4382371630566266858
 MeshFilter:
@@ -3225,6 +3224,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3688693783704401282}
   - {fileID: 2933063466758347615}
   m_Father: {fileID: 6843402422126172484}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

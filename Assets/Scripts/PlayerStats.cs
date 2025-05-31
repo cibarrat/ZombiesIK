@@ -118,7 +118,7 @@ public class PlayerStats : MonoBehaviour
             currentHP -= damage;
             if (currentHP <= 0)
             {
-                animator.SetTrigger("IsDead");//Death Animation
+                animator.SetTrigger("isDead");//Death Animation
                 tpController.SetCanMove(false);
                 tpsController.CanAim = false;
                 isInvincible = true;
@@ -126,7 +126,7 @@ public class PlayerStats : MonoBehaviour
             } else
             {
                 StartCoroutine(Hitstun(hitstun));
-                animator.SetTrigger("IsHit");//Hit Damage Animation
+                animator.SetTrigger("isHit");//Hit Damage Animation
             }
         }
     }
